@@ -1,0 +1,5 @@
+- name: fetch nix tarball
+  ansible.builtin.get_url:
+    url: "{{ tarball.url }}"
+    checksum: "sha256:{{ tarball.sha256 }}"
+    dest: /tmp
