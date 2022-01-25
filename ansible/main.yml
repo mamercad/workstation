@@ -1,0 +1,12 @@
+---
+- name: main
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+
+  tasks:
+
+    - name: include nix role
+      ansible.builtin.include_role:
+        name: nix
