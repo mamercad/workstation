@@ -1,3 +1,5 @@
+---
+# defaults file for foo-role
 tarball:
   url: https://releases.nixos.org/nix/nix-2.6.0/nix-2.6.0-x86_64-darwin.tar.xz
   sha256: 9e38fbc023e7de18775dd71a0ac29854ca7a6a33c3a0bfa840a30bb5693c60da
