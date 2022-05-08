@@ -5,6 +5,10 @@
   gather_facts: true
   become: false
 
+  vars:
+
+    CI: "{{ lookup('ansible.builtin.env', 'CI') | default(false, true) | bool }}"
+
   tasks:
 
     - name: ping
