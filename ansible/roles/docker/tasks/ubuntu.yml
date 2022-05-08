@@ -8,3 +8,14 @@
       - gnupg
       - lsb-release
   become: true
+
+- name: kernel modules
+  community.general.modprobe:
+    state: present
+    name: "{{ module }}"
+  loop:
+    - kvm
+    - kvm_intel
+  loop_control:
+    loop_var: module
+  become: true
