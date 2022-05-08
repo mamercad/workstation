@@ -1,0 +1,65 @@
+---
+# tasks file for roles/homebrew
+
+- name: download homebrew uninstall.sh
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh
+    dest: /tmp/homebrew-uninstall.sh
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: download homebrew install.sh
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+    dest: /tmp/homebrew-install.sh
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: install homebrew
+  ansible.builtin.command:
+    cmd: /tmp/homebrew-install.sh
+    creates: /home/linuxbrew/.linuxbrew/bin/brew
+  environment:
+    NONINTERACTIVE: 1
+
+- name: configure ~/.zprofile
+  ansible.builtin.blockinfile:
+    backup: true
+    create: true
+    path: "{{ ansible_user_dir }}/.zprofile"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
+    insertafter: EOF
+    block: |
+      export HOMEBREW_NO_ANALYTICS=1
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+- name: disable analytics
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew analytics off
+  changed_when: false  # idgaf
+
+# - name: brew doctor
+#   ansible.builtin.command:
+#     cmd: brew doctor
+#   register: doctor
+#   ignore_errors: true  # needs to potentially fail
+#   environment:
+#     PATH: /home/linuxbrew/.linuxbrew/bin:"{{ lookup('ansible.builtin.env', 'PATH') }}"
+
+# - name: brew fix
+#   ansible.builtin.shell:
+#     cmd: |
+#       rm -rf /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core;
+#       brew tap homebrew/core
+#   when:
+#     - "'Warning: Homebrew/homebrew-core was not tapped properly! Run:' in doctor.stderr"
+#     - "'rm -rf \"/home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core\"' in doctor.stderr"
+#     - "'brew tap homebrew/core' in doctor.stderr"
+#   environment:
+#     PATH: /home/linuxbrew/.linuxbrew/bin:"{{ lookup('ansible.builtin.env', 'PATH') }}"
