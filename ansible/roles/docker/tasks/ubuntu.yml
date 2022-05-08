@@ -7,3 +7,4 @@
       - curl
       - gnupg
       - lsb-release
+  become: true
