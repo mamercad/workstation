@@ -26,3 +26,8 @@ jobs:
         working-directory: ansible
         run: |
           make ping
+
+      - name: make site
+        working-directory: ansible
+        run: |
+          make site

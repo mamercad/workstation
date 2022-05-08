@@ -1,2 +1,7 @@
 ---
 # defaults file for ubuntu
+
+packages:
+  - git
+  - lastpass-cli
+  - python3-venv
