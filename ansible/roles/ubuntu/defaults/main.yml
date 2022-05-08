@@ -2,10 +2,13 @@
 # defaults file for ubuntu
 
 packages:
+  - build-essential
   - curl
   - direnv
+  - gcc
   - git
   - lastpass-cli
+  - neofetch
   - python3-venv
   - vim
   - zsh
