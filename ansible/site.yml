@@ -1,0 +1,16 @@
+---
+- name: site
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  become: false
+
+  tasks:
+
+    - name: ping
+      ansible.builtin.ping:
+
+    - name: ubuntu
+      ansible.builtin.include_role:
+        name: ubuntu
+      when: ansible_distribution == "Ubuntu"
