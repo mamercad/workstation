@@ -22,8 +22,21 @@ jobs:
           python3 -m pip install --upgrade pip
           pip3 install --requirement requirements.txt
 
+      - name: pre-commit
+        uses: pre-commit/action@v2.0.3
+
       - name: ansible
         working-directory: ansible
         run: |
           ansible -i inventory.yml -m ping all
           ansible-playbook -i inventory.yml site.yml -v
+
+      - name: slack
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: ci
+          SLACK_TITLE: ${{ github.repository }}
+          SLACK_ICON_EMOJI: ":ship:"
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_FOOTER: ${{ runner.name }}
