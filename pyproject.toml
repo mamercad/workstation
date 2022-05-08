@@ -6,7 +6,7 @@ authors = ["Mark Mercado <mamercad@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-ansible = "^5.7.1"
+ansible = "5.7.1"
 
 [tool.poetry.dev-dependencies]
 
