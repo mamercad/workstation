@@ -1,0 +1,8 @@
+---
+# tasks file for ubuntu
+
+- name: prompt
+  ansible.builtin.pause:
+    seconds: 0
+    prompt: |
+      ubuntu
