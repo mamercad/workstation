@@ -22,3 +22,14 @@
     - name: docker
       ansible.builtin.include_role:
         name: docker
+
+    - name: homebrew
+      ansible.builtin.include_role:
+        name: homebrew
+        apply:
+          tags:
+            - brew
+            - homebrew
+      tags:
+        - always
+      when: not CI
