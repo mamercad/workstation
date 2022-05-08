@@ -2,6 +2,10 @@
 # defaults file for ubuntu
 
 packages:
+  - curl
+  - direnv
   - git
   - lastpass-cli
   - python3-venv
+  - vim
+  - zsh
