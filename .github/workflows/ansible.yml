@@ -22,12 +22,8 @@ jobs:
           python3 -m pip install --upgrade pip
           pip3 install --requirement requirements.txt
 
-      - name: make ping
+      - name: ansible
         working-directory: ansible
         run: |
-          make ping
-
-      - name: make site
-        working-directory: ansible
-        run: |
-          make site
+          ansible -i inventory.yml -m ping all
+          ansible-playbook -i inventory.yml site.yml -v
