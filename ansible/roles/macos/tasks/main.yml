@@ -1,0 +1,11 @@
+---
+
+- name: brews
+  community.general.homebrew:
+    state: present
+    name: "{{ brew }}"
+  register: brew
+  failed_when: brew.failed_when_result is true
+  loop: "{{ brews }}"
+  loop_control:
+    loop_var: brew
