@@ -19,6 +19,11 @@
         name: ubuntu
       when: ansible_distribution == "Ubuntu"
 
+    - name: macos
+      ansible.builtin.include_role:
+        name: macos
+      when: ansible_distribution == "MacOSX"
+
     - name: docker
       ansible.builtin.include_role:
         name: docker
