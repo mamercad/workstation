@@ -1,12 +1,11 @@
 ---
-# tasks file for roles/homebrew
 
 - name: download homebrew uninstall.sh
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh
     dest: /tmp/homebrew-uninstall.sh
     owner: root
-    group: root
+    group: "{{ lookup('ansible.builtin.pipe', 'id -gn root') }}"
     mode: 0755
   become: true
 
@@ -15,34 +14,23 @@
     url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
     dest: /tmp/homebrew-install.sh
     owner: root
-    group: root
+    group: "{{ lookup('ansible.builtin.pipe', 'id -gn root') }}"
     mode: 0755
   become: true
 
-- name: install homebrew
-  ansible.builtin.command:
-    cmd: /tmp/homebrew-install.sh
-    creates: /home/linuxbrew/.linuxbrew/bin/brew
-  environment:
-    NONINTERACTIVE: 1
+- name: distribution block
+  block:
 
-- name: configure ~/.zprofile
-  ansible.builtin.blockinfile:
-    backup: true
-    create: true
-    path: "{{ ansible_user_dir }}/.zprofile"
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: "0644"
-    insertafter: EOF
-    block: |
-      export HOMEBREW_NO_ANALYTICS=1
-      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    - name: include distribution tasks
+      ansible.builtin.include_tasks:
+        file: "{{ ansible_distribution | lower }}.yml"
 
-- name: disable analytics
-  ansible.builtin.command:
-    cmd: /home/linuxbrew/.linuxbrew/bin/brew analytics off
-  changed_when: false  # idgaf
+  rescue:
+
+    - name: not implemented
+      ansible.builtin.debug:
+        msg: |
+          distribution {{ ansible_distribution }} not implemented
 
 # - name: brew doctor
 #   ansible.builtin.command:

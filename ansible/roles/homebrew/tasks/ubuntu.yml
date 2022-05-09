@@ -1,0 +1,26 @@
+---
+
+- name: install homebrew
+  ansible.builtin.command:
+    cmd: /tmp/homebrew-install.sh
+    creates: /home/linuxbrew/.linuxbrew/bin/brew
+  environment:
+    NONINTERACTIVE: "1"
+
+- name: configure ~/.zprofile
+  ansible.builtin.blockinfile:
+    backup: true
+    create: true
+    path: "{{ ansible_user_dir }}/.zprofile"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0644"
+    insertafter: EOF
+    block: |
+      export HOMEBREW_NO_ANALYTICS=1
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+- name: disable analytics
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew analytics off
+  changed_when: false  # idgaf
