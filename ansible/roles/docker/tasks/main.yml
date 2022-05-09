@@ -1,6 +1,16 @@
 ---
 # tasks file for roles/docker
 
-- name: include distribution tasks
-  ansible.builtin.include_tasks:
-    file: "{{ ansible_distribution | lower }}.yml"
+- name: distribution block
+  block:
+
+    - name: include distribution tasks
+      ansible.builtin.include_tasks:
+        file: "{{ ansible_distribution | lower }}.yml"
+
+  rescue:
+
+    - name: not implemented
+      ansible.builtin.debug:
+        msg: |
+          distribution {{ ansible_distribution }} not implemented
