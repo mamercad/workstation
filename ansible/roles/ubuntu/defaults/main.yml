@@ -5,10 +5,19 @@ packages:
   - build-essential
   - curl
   - direnv
+  - fd-find
+  - fzf
   - gcc
   - git
+  - htop
   - lastpass-cli
   - neofetch
+  - pipenv
   - python3-venv
+  - silversearcher-ag
+  - thefuck
+  - tig
+  - tmux
   - vim
+  - w3m
   - zsh
