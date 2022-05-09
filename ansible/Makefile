@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := site
+
 ping:
 	ansible -i inventory.yml -m ping all
 
